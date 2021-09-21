@@ -1,6 +1,6 @@
 ## Requirements
 
-<p>Application that connects to <a href="https://developers.themoviedb.org/3/getting-started/introduction">The Movie Database API</a> and allows searching for movies by name, save favorite movies to the local db, show a list with the favorite movies and view details about a movie.</p>
+<p>Application that connects to <a href="https://developers.themoviedb.org/3/getting-started/introduction">The Movie Database API</a> and allows searching for movies by name, save favorite movies to the local db, show a list with the favorite movies and presents details about a movie.</p>
 <p>Pages:</p>
 <ol>
     <li>Home page with search field,</li>
