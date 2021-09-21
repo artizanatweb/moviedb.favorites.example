@@ -76,7 +76,11 @@ const DetailsPage = (props) => {
     }, []);
 
     const backHandler = (evt) => {
-        history.goBack();
+        dispatch(storeActions.showAppLoading());
+
+        setTimeout(() => {
+            history.goBack();
+        }, 350);
     };
 
     const language = () => {
