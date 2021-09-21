@@ -111,6 +111,9 @@ class FavoritesController extends ApiController
     {
         try {
             $movieIds = $this->service->getPageFavorites($request);
+            if (count($movieIds) > 0) {
+                $movieIds = array_map('intval', $movieIds);
+            }
 
             $this->apiResponse->setData($movieIds);
         } catch (Exception $e) {
