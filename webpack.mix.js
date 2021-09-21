@@ -25,4 +25,4 @@ mix.js('resources/js/app.js', 'public/js')
     })
     .version();
 
-mix.browserSync('app.flygo.localhost');
+mix.browserSync('moviedb.favorites.localhost');
