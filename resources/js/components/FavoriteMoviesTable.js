@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
         textOverflow: 'ellipsis',
     },
     container: {
-        maxHeight: 620,
-        minHeight: 620,
+        maxHeight: 580,
+        minHeight: 580,
     },
     th: {
         backgroundColor: theme.palette.common.white,
