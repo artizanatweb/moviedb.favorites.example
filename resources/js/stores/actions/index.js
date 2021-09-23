@@ -6,6 +6,9 @@ export {
     storeClientId,
     applicationReady,
     setApplicationPage,
+    setApplicationHeight,
+    setApplicationWidth,
+    setApplicationDimensions,
 } from "./application";
 
 export {
@@ -37,6 +40,11 @@ export {
     changeFavoritePageNumber,
     setFavoritesLoading,
     requestFavoriteMovieDelete,
+    allowFavoriteSearch,
+    changeFavoriteQuery,
+    clearFavoriteQuery,
+    setFavoriteQuery,
+    searchFavoriteMovie,
 } from "./favorites";
 
 export {

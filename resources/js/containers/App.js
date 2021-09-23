@@ -29,6 +29,25 @@ function App(props) {
         dispatch(storeActions.applicationReady(true));
     });
 
+    useEffect(() => {
+        let resizeTimer = 0;
+        function resizeHandler() {
+            clearTimeout(resizeTimer);
+
+            resizeTimer = setTimeout(() => {
+                dispatch(storeActions.setApplicationDimensions());
+            }, 500);
+        }
+
+        window.addEventListener('resize', resizeHandler);
+
+        resizeHandler();
+
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        };
+    }, []);
+
     const theme = createTheme({
         palette: {
             type: "light",

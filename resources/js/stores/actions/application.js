@@ -53,3 +53,23 @@ export const setApplicationPage = (page = null) => {
         page: page,
     }
 };
+
+export const setApplicationHeight = (height = 100) => {
+    return {
+        type: actionTypes.application.HEIGHT,
+        height: height,
+    }
+};
+
+export const setApplicationWidth = (width = 100) => {
+    return {
+        type: actionTypes.application.WIDTH,
+        width: width,
+    }
+};
+
+export const setApplicationDimensions = () => {
+    return {
+        type: actionTypes.application.SET_DIMENSIONS,
+    }
+};

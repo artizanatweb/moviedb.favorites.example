@@ -41,3 +41,11 @@ export function* storeClientIdSaga(action) {
 
     yield put(storeActions.setClientId(clientId));
 }
+
+export function* setApplicationDimensionsSaga() {
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    yield put(storeActions.setApplicationWidth(width));
+    yield put(storeActions.setApplicationHeight(height));
+}

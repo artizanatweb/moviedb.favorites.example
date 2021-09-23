@@ -4,6 +4,7 @@ import {
     applicationReadySaga,
     getClientIdSaga,
     storeClientIdSaga,
+    setApplicationDimensionsSaga,
 } from "./application";
 import {
     changeMoviesQuerySaga,
@@ -16,6 +17,7 @@ import {
     requestFavoriteRemovalSaga,
     requestFavoriteMoviesSaga,
     requestRemoveFromFavorites,
+    changeFavoriteQuerySaga,
 } from "./favorites";
 import {
     requestMovieDetailsSaga,
@@ -23,6 +25,7 @@ import {
 
 export function* watchApplication() {
     yield takeEvery(actionTypes.application.READY, applicationReadySaga);
+    yield takeEvery(actionTypes.application.SET_DIMENSIONS, setApplicationDimensionsSaga);
     yield takeEvery(actionTypes.application.GET_CLIENT_ID, getClientIdSaga);
     yield takeEvery(actionTypes.application.STORE_CLIENT_ID, storeClientIdSaga);
 }
@@ -38,7 +41,8 @@ export function* watchFavorites() {
     yield takeEvery(actionTypes.favorites.REQUEST_OBJECT, requestFavoriteObjectSaga);
     yield takeEvery(actionTypes.favorites.DELETE, requestFavoriteRemovalSaga);
     yield takeEvery(actionTypes.favorites.REQUEST_ITEMS, requestFavoriteMoviesSaga);
-    yield takeEvery(actionTypes.favorites.REQUEST_DELETE, requestRemoveFromFavorites)
+    yield takeEvery(actionTypes.favorites.REQUEST_DELETE, requestRemoveFromFavorites);
+    yield takeEvery(actionTypes.favorites.CHANGE_QUERY, changeFavoriteQuerySaga);
 }
 
 export function* watchMovie() {

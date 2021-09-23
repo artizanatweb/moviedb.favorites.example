@@ -209,6 +209,10 @@ export function* requestFavoriteMoviesSaga(action) {
         per_page: per_page,
     };
 
+    if (action.allowSearch) {
+        params.query = action.query;
+    }
+
     let responseObject = null;
     let isError = false;
 
@@ -239,4 +243,18 @@ export function* requestFavoriteMoviesSaga(action) {
 
     yield put(storeActions.setFavoritesLoading(false));
     yield put(storeActions.hideAppLoading());
+}
+
+export function* changeFavoriteQuerySaga(action) {
+    let query = action.query;
+    query = query.replace(/[^A-Za-z '0-9_-]/g, "").toLowerCase();
+
+    let allowSearch = false;
+    if (query.length >= 3) {
+        allowSearch = true;
+    }
+
+    yield put(storeActions.allowFavoriteSearch(allowSearch));
+
+    yield put(storeActions.setFavoriteQuery(query));
 }

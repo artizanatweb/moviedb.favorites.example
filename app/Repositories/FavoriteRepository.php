@@ -31,7 +31,10 @@ class FavoriteRepository implements Interfaces\FavoriteRepository
 
     public function remove(Favorite $favorite)
     {
-        // TODO: Implement remove() method.
+        $removed = $favorite->delete();
+        if (!$removed) {
+            throw new Exception("Can't remove favorite movie from DB!");
+        }
     }
 
     public function pageFavorites(int $clientId, array $movies): Collection

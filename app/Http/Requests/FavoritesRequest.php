@@ -12,7 +12,7 @@ class FavoritesRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,12 +22,13 @@ class FavoritesRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'client_id' => ['bail', 'required', 'numeric', Rule::exists('clients', 'id')],
             'page' => ['nullable', 'numeric', 'min:1'],
             'per_page' => ['nullable', 'numeric', 'min:1', 'max:100'],
+            'query' => ['nullable', 'min:3', 'max:250'],
         ];
     }
 }

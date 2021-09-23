@@ -4,7 +4,7 @@ const PAGER = {
     current_page: 1,
     from: 0,
     to: 0,
-    per_page: process.env.MIX_FAVORITES_DEFAULT_ROWS,
+    per_page: parseInt(process.env.MIX_FAVORITES_DEFAULT_ROWS),
     next_page: 1,
     prev_page: 1,
     total: 0,
@@ -21,6 +21,9 @@ const initialState = {
     deleteObject: null,
     deleteDialog: false,
     removing: false,
+    query: "",
+    allowSearch: false,
+    searched: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -79,6 +82,33 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: action.loading,
+            }
+        case actionTypes.favorites.SET_QUERY:
+            return {
+                ...state,
+                query: action.query,
+            }
+        case actionTypes.favorites.ALLOW_SEARCH:
+            return {
+                ...state,
+                allowSearch: action.allow,
+            }
+        case actionTypes.favorites.CLEAR_QUERY:
+            return {
+                ...state,
+                query: "",
+                allowSearch: false,
+                searched: false,
+            }
+        case actionTypes.favorites.SEARCH:
+            return {
+                ...state,
+                searched: true,
+                pager: {
+                    ...state.pager,
+                    page: 0,
+                    current_page: 1,
+                },
             }
         default:
             return state;

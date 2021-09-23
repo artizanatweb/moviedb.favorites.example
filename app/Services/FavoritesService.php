@@ -46,10 +46,7 @@ class FavoritesService
 
     public function remove(Favorite $favorite)
     {
-        $removed = $favorite->delete();
-        if (!$removed) {
-            throw new Exception("Can't remove favorite movie from DB!");
-        }
+        $this->repository->remove($favorite);
     }
 
     public function getPageFavorites(FavoritePageMoviesRequest $request) : array
@@ -86,6 +83,12 @@ class FavoritesService
         $clientId = $validatedData['client_id'];
         $pageRows = (int) $validatedData['per_page'] ?? env('FAVORITES_DEFAULT_ROWS', 5);
 
-        return new FavoriteCollection(Favorite::where('client_id', $clientId)->orderBy('created_at','desc')->paginate($pageRows));
+        $query = Favorite::where('client_id', $clientId);
+        if (isset($validatedData['query'])) {
+            $query->where('original_title', 'like', '%' . $validatedData['query'] . '%');
+        }
+        $rows = $query->orderBy('created_at','desc')->paginate($pageRows);
+
+        return new FavoriteCollection($rows);
     }
 }

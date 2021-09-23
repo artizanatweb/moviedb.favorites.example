@@ -13,9 +13,17 @@ import {
     TableRow,
     IconButton,
     Divider,
+    FormControl,
+    InputLabel,
+    Input,
+    InputAdornment,
+    Button,
+    Typography,
 } from "@material-ui/core";
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
+import SearchIcon from "@material-ui/icons/Search";
+import BackspaceIcon from '@material-ui/icons/Backspace';
 import * as storeActions from "./../stores/actions";
 import RoundLoading from "./RoundLoading";
 
@@ -23,10 +31,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         textOverflow: 'ellipsis',
-    },
-    container: {
-        maxHeight: 580,
-        minHeight: 580,
     },
     th: {
         backgroundColor: theme.palette.common.white,
@@ -37,7 +41,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         paddingTop: 50,
         paddingBottom: 50,
-    }
+    },
+    blackColor: {
+        color: theme.palette.common.black,
+    },
+    grayButton: {
+        color: theme.palette.grey["500"],
+    },
 }));
 
 const FavoriteMoviesTable = (props) => {
@@ -94,8 +104,70 @@ const FavoriteMoviesTable = (props) => {
         dispatch(storeActions.requestFavoriteMovieDelete(movieId));
     };
 
-    if (!(favorites.pager.total > 0)) {
-        return null;
+    const queryHandler = (event) => {
+        if (favorites.loading) {
+            return;
+        }
+
+        let query = event.target.value;
+
+        dispatch(storeActions.changeFavoriteQuery(query));
+    }
+
+    const clearSearchHandler = () => {
+        let requestMovies = favorites.allowSearch;
+
+        dispatch(storeActions.clearFavoriteQuery());
+
+        if (requestMovies && favorites.searched) {
+            dispatch(storeActions.requestFavoriteMovies());
+        }
+    };
+
+    const searchHandler = () => {
+        if (favorites.loading) {
+            return;
+        }
+
+        if (!favorites.allowSearch) {
+            return;
+        }
+
+        dispatch(storeActions.searchFavoriteMovie());
+    }
+
+    const handleReturn = (event) => {
+        if (13 === event.keyCode) {
+            searchHandler();
+        }
+    };
+
+    let searchButtonColor = "default";
+    if (favorites.allowSearch) {
+        searchButtonColor = "primary";
+    }
+
+    let searchButton = (
+        <Button
+            startIcon={<SearchIcon />}
+            variant={"contained"}
+            color={searchButtonColor}
+            onClick={searchHandler}
+        >
+            search
+        </Button>
+    );
+    if (440 > application.width) {
+        searchButton = (
+            <Button
+                variant={"contained"}
+                color={searchButtonColor}
+                onClick={searchHandler}
+                size={"small"}
+            >
+                <SearchIcon />
+            </Button>
+        );
     }
 
     const getRows = () => {
@@ -106,6 +178,25 @@ const FavoriteMoviesTable = (props) => {
                         <TableCell colSpan={4}>
                             <div className={classes.loading}>
                                 <RoundLoading />
+                            </div>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            );
+        }
+
+        if (!(favorites.pager.total > 0)) {
+            let emptyMessage = "Favorite movie list is empty.";
+            if (favorites.searched) {
+                emptyMessage = "Movie not found.";
+            }
+
+            return (
+                <TableBody>
+                    <TableRow>
+                        <TableCell colSpan={4}>
+                            <div className={classes.loading}>
+                                <Typography component={"p"}>{ emptyMessage }</Typography>
                             </div>
                         </TableCell>
                     </TableRow>
@@ -142,10 +233,45 @@ const FavoriteMoviesTable = (props) => {
         );
     };
 
+    let tableHeight = (application.height - 56 - 90 - 30 * 4);
+    if (500 > application.height) {
+        tableHeight = (application.height - 46 - 90);
+    }
+
+    let clearButtonClass = classes.grayButton;
+    if (favorites.query.length > 0) {
+        clearButtonClass = classes.blackColor;
+    }
+
     return (
         <Paper className={classes.root} elevation={2}>
-            <TableContainer className={classes.container}>
-                <Table stickyHeader aria-label="sticky table">
+            <div className={"searchFavoriteSupport"}>
+                <div className={"searchFavoriteForm"}>
+                    <FormControl className="formRow" error={false}>
+                        <InputLabel htmlFor={"movieQuery"}>Movie title</InputLabel>
+                        <Input
+                            id={"movieQuery"}
+                            value={favorites.query}
+                            onChange={queryHandler}
+                            color={"primary"}
+                            type={"text"}
+                            onKeyDown={handleReturn}
+                            endAdornment={
+                                <InputAdornment position={"end"}>
+                                    <IconButton onClick={clearSearchHandler} className={clearButtonClass}>
+                                        <BackspaceIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl className="buttonRow" error={false}>
+                        { searchButton }
+                    </FormControl>
+                </div>
+            </div>
+            <TableContainer style={{ height: tableHeight }}>
+                <Table stickyHeader aria-label="sticky table" className={"favoriteMoviesTable"}>
                     <TableHead>
                         <TableRow>
                             <TableCell className={classes.th} align={"left"}>Title</TableCell>

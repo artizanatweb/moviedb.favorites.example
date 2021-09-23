@@ -5,6 +5,8 @@ const initialState = {
     loading: true,
     clientId: 0,
     page: null,
+    height: null,
+    width: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,6 +30,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 page: action.page,
+            }
+        case actionTypes.application.HEIGHT:
+            return {
+                ...state,
+                height: action.height,
+            }
+        case actionTypes.application.WIDTH:
+            return {
+                ...state,
+                width: action.width,
             }
         default:
             return state;

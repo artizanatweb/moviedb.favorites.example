@@ -110,6 +110,8 @@ export const requestFavoriteMovies = () => {
             type: actionTypes.favorites.REQUEST_ITEMS,
             clientId: state.application.clientId,
             pager: state.favorites.pager,
+            query: state.favorites.query,
+            allowSearch: state.favorites.allowSearch,
         });
     }
 };
@@ -132,15 +134,13 @@ export const changeFavoritePageRows = (pageRows = 5) => {
     return (dispatch, getState) => {
         const state = getState();
 
-        dispatch({
-            type: actionTypes.favorites.REQUEST_ITEMS,
-            clientId: state.application.clientId,
-            pager: {
-                ...state.favorites.pager,
-                per_page: pageRows,
-                current_page: 1,
-            },
-        });
+        let pager = {
+            per_page: parseInt(pageRows),
+            current_page: 1,
+        }
+        dispatch(setFavoritesPager(pager));
+
+        dispatch(requestFavoriteMovies());
     }
 };
 
@@ -148,14 +148,12 @@ export const changeFavoritePageNumber = (newPage = 1) => {
     return (dispatch, getState) => {
         const state = getState();
 
-        dispatch({
-            type: actionTypes.favorites.REQUEST_ITEMS,
-            clientId: state.application.clientId,
-            pager: {
-                ...state.favorites.pager,
-                current_page: newPage,
-            },
-        });
+        let pager = {
+            current_page: parseInt(newPage),
+        }
+        dispatch(setFavoritesPager(pager));
+
+        dispatch(requestFavoriteMovies());
     }
 };
 
@@ -170,6 +168,42 @@ export const requestFavoriteMovieDelete = (movieId) => {
     return {
         type: actionTypes.favorites.REQUEST_DELETE,
         favRequestId: movieId,
+    }
+};
 
+export const changeFavoriteQuery = (query = "") => {
+    return {
+        type: actionTypes.favorites.CHANGE_QUERY,
+        query: query,
+    }
+};
+
+export const setFavoriteQuery = (query = "") => {
+    return {
+        type: actionTypes.favorites.SET_QUERY,
+        query: query,
+    }
+};
+
+export const allowFavoriteSearch = (allow = false) => {
+    return {
+        type: actionTypes.favorites.ALLOW_SEARCH,
+        allow: allow,
+    }
+};
+
+export const clearFavoriteQuery = () => {
+    return {
+        type: actionTypes.favorites.CLEAR_QUERY,
+    }
+};
+
+export const searchFavoriteMovie = () => {
+    return (dispatch) => {
+        dispatch({
+            type: actionTypes.favorites.SEARCH,
+        });
+
+        dispatch(requestFavoriteMovies());
     }
 };
