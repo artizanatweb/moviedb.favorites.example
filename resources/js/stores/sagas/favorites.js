@@ -225,7 +225,6 @@ export function* requestFavoriteMoviesSaga(action) {
             isError = true;
         });
 
-    console.log(responseObject);
     if (isError) {
         // set error
         yield put(storeActions.setFavoritesLoading(false));

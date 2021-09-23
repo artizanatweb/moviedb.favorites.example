@@ -119,7 +119,7 @@ const FavoriteMoviesTable = (props) => {
 
         dispatch(storeActions.clearFavoriteQuery());
 
-        if (requestMovies && favorites.searched) {
+        if (requestMovies || favorites.searched) {
             dispatch(storeActions.requestFavoriteMovies());
         }
     };

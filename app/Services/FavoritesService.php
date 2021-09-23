@@ -84,9 +84,12 @@ class FavoritesService
         $pageRows = (int) $validatedData['per_page'] ?? env('FAVORITES_DEFAULT_ROWS', 5);
 
         $query = Favorite::where('client_id', $clientId);
+
         if (isset($validatedData['query'])) {
-            $query->where('original_title', 'like', '%' . $validatedData['query'] . '%');
+            $search = "%" . str_replace(" ", "%", trim($validatedData['query'])) . "%";
+            $query->where('original_title', 'like', $search);
         }
+
         $rows = $query->orderBy('created_at','desc')->paginate($pageRows);
 
         return new FavoriteCollection($rows);
