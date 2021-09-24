@@ -3,9 +3,9 @@
 <p>Application that connects to <a href="https://developers.themoviedb.org/3/getting-started/introduction">The Movie Database API</a> and allows searching for movies by name, save favorite movies to the local db, show a list with the favorite movies and presents details about a movie.</p>
 <p>Pages:</p>
 <ol>
-    <li>Home page with search field,</li>
-    <li>Favorite movies listed in a table with pagination,</li>
-    <li>Movie details</li>
+    <li>Home page with search field, list results and paginator.</li>
+    <li>Favorite movies listed in a table with pagination and search by title.</li>
+    <li>Movie details - page to display movie details and poster image.</li>
 </ol>
 
 ## Demo
@@ -36,4 +36,60 @@
 
 ## Installation
 
-<p>WIP</p>
+Create database:
+<pre>
+mysql> create database moviedb_favorites;
+</pre>
+<br />
+Copy file .env.example to .env
+<pre>
+$ cp .env.example .env
+</pre>
+and edit .env file based on your settings: <br />
+- database: DB_USERNAME, DB_PASSWORD <br />
+- main user: <b>ADMIN_CREDENTIALS_EMAIL</b>; <b>ADMIN_CREDENTIALS_PASSWD</b> <br />
+<br />
+<br />
+Copy the virtual host file from /debian/ to your apache directory.
+<pre>
+$ cp -fr debian/moviedb.favorites.localhost.conf /etc/apache2/sites-available/
+</pre>
+Change file /etc/apache2/sites-available/moviedb.favorites.localhost.conf with your paths.<br />
+<br />
+Activate the virtual host and reload apache:
+<pre>
+$ sudo a2ensite moviedb.favorites.localhost.conf
+$ sudo systemctl reload apache2
+</pre> 
+Apache <b>mod_rewrite</b> must be enabled ($ sudo a2enmod rewrite)
+<br />
+<br />
+Add the following line to your <b>/etc/hosts</b>:
+<pre>
+127.0.1.1	moviedb.favorites.localhost
+</pre>
+<br />
+Install dependencies using composer:
+<pre>
+$ composer install
+</pre>
+<br />
+Set the application key:
+<pre>
+$ php artisan key:generate
+</pre>
+<br />
+Run DB migration:
+<pre>
+$ php artisan migrate
+</pre>
+<br />
+Install front-end dependencies:
+<pre>
+$ npm install
+</pre>
+<br />
+Generate a production build:
+<pre>
+$ npm run prod
+</pre>
