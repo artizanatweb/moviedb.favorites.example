@@ -49,6 +49,10 @@ and edit .env file based on your settings: <br />
 - database: DB_USERNAME, DB_PASSWORD <br />
 - main user: <b>ADMIN_CREDENTIALS_EMAIL</b>; <b>ADMIN_CREDENTIALS_PASSWD</b> <br />
 <br />
+You need an API key from the website <a href="https://developers.themoviedb.org/3/getting-started/introduction">The Movie Database</a> and save it in the .env file:
+<br />
+- "The Movie Database (TMDB) API" - api key: <b>MOVIEDB_KEY</b>
+<br />
 <br />
 Copy the virtual host file from /debian/ to your apache directory.
 <pre>
